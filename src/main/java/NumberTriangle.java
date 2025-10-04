@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -120,7 +122,8 @@ public class NumberTriangle {
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
 
-        // TODO define any variables that you want to use to store things
+        // done: define any variables that you want to use to store things
+        List<List<NumberTriangle>> triangleRows = new ArrayList<>();
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
@@ -128,17 +131,31 @@ public class NumberTriangle {
 
         String line = br.readLine();
         while (line != null) {
-
             // remove when done; this line is included so running starter code prints the contents of the file
             System.out.println(line);
-
-            // TODO process the line
-
+            // done: process the line
+            String[] tokens = line.trim().split("\\s+");
+            List<NumberTriangle> row = new ArrayList<>();
+            for (String token : tokens) {
+                row.add(new NumberTriangle(Integer.parseInt(token)));
+            }
+            triangleRows.add(row);
             //read the next line
             line = br.readLine();
         }
         br.close();
-        return top;
+
+        for (int row = triangleRows.size() - 2; row >= 0; row--) {
+            List<NumberTriangle> current = triangleRows.get(row);
+            List<NumberTriangle> below = triangleRows.get(row + 1);
+
+            for (int i = 0; i < current.size(); i++) {
+                current.get(i).setLeft(below.get(i));
+                current.get(i).setRight(below.get(i + 1));
+            }
+        }
+        // Return the topmost node
+        return triangleRows.get(0).get(0);
     }
 
     public static void main(String[] args) throws IOException {

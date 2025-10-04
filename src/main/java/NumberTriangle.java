@@ -1,4 +1,8 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -88,8 +92,25 @@ public class NumberTriangle {
      *
      */
     public int retrieve(String path) {
-        // TODO implement this method
-        return -1;
+        NumberTriangle current = this;
+//        test
+        if (path == null || path.isEmpty()) {
+            return current.root;
+        }
+
+        for (char direction : path.toCharArray()) {
+            if (direction == 'l') {
+                current = current.left;
+            } else if (direction == 'r') {
+                current = current.right;
+            }
+
+            if (current == null) {
+                throw new IllegalArgumentException("Invalid path: traversal failed at a null child.");
+            }
+        }
+
+        return current.root;
     }
 
     /** Read in the NumberTriangle structure from a file.
@@ -109,8 +130,7 @@ public class NumberTriangle {
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
-
-        // TODO define any variables that you want to use to store things
+        List<NumberTriangle> previousRow = new ArrayList<>();
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
@@ -119,12 +139,36 @@ public class NumberTriangle {
         String line = br.readLine();
         while (line != null) {
 
-            // remove when done; this line is included so running starter code prints the contents of the file
-            System.out.println(line);
+            List<Integer> numbers = Arrays.stream(line.trim().split("\\s+"))
+                    .filter(s -> !s.isEmpty())
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
 
-            // TODO process the line
+            List<NumberTriangle> currentRow = new ArrayList<>();
+            for (int number : numbers) {
+                currentRow.add(new NumberTriangle(number));
+            }
 
-            //read the next line
+            if (top == null) {
+                if (!currentRow.isEmpty()) {
+                    top = currentRow.get(0);
+                }
+            } else {
+                for (int i = 0; i < previousRow.size(); i++) {
+                    NumberTriangle parent = previousRow.get(i);
+
+                    if (i < currentRow.size()) {
+                        parent.setLeft(currentRow.get(i));
+                    }
+
+                    if (i + 1 < currentRow.size()) {
+                        parent.setRight(currentRow.get(i + 1));
+                    }
+                }
+            }
+
+            previousRow = currentRow;
+
             line = br.readLine();
         }
         br.close();
@@ -142,3 +186,4 @@ public class NumberTriangle {
         System.out.println(mt.getRoot());
     }
 }
+

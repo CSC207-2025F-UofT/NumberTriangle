@@ -25,7 +25,6 @@ import java.util.List;
 public class NumberTriangle {
 
     private int root;
-
     private NumberTriangle left;
     private NumberTriangle right;
 
@@ -137,6 +136,7 @@ public class NumberTriangle {
         // [not for credit]
         // you can implement NumberTriangle's maxPathSum method if you want to try to solve
         // Problem 18 from project Euler [not for credit]
+        assert mt != null;
         mt.maxSumPath();
         System.out.println(mt.getRoot());
     }

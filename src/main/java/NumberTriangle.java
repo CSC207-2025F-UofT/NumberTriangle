@@ -105,7 +105,6 @@ public class NumberTriangle {
         }
         return cur.root;
     }
-v
 
     /** Read in the NumberTriangle structure from a file.
      *

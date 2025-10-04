@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.List;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -88,10 +89,23 @@ public class NumberTriangle {
      *
      */
     public int retrieve(String path) {
-        // TODO implement this method
-        return -1;
+        NumberTriangle curr = this;
+        if (path.isEmpty()) {
+            return this.root;
+        }
+        else {
+            for (int i = 0; i < path.length(); i++) {
+                if (path.charAt(i) == ('l')) {
+                    curr = curr.left;
+                } else {
+                    curr = curr.right;
+                }
+            }
+            return curr.getRoot();
+        }
+        // implement this method
     }
-
+;
     /** Read in the NumberTriangle structure from a file.
      *
      * You may assume that it is a valid format with a height of at least 1,
@@ -108,22 +122,29 @@ public class NumberTriangle {
         // are more convenient to work with when reading the file contents.
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-
-
-        // TODO define any variables that you want to use to store things
-
+        NumberTriangle[] prev = null;
+        NumberTriangle[] curr = null;
+        // define any variables that you want to use to store things
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
         NumberTriangle top = null;
-
         String line = br.readLine();
+        int topRoot = Integer.parseInt(line);
+        top = new NumberTriangle(topRoot);
+        prev = new NumberTriangle[]{top};
+        line = br.readLine();
         while (line != null) {
-
-            // remove when done; this line is included so running starter code prints the contents of the file
-            System.out.println(line);
-
-            // TODO process the line
-
+            String[] parts = line.trim().split("\\s+");
+            curr = new NumberTriangle[parts.length];
+            for (int i = 0; i < (parts.length); i++){
+                curr[i] = new NumberTriangle(Integer.parseInt(parts[i]));
+            }
+            for (int i = 0; i < (prev.length); i++) {
+                prev[i].left = curr[i];
+                prev[i].right = curr[i + 1];
+            }
+            // process the line
+            prev = curr;
             //read the next line
             line = br.readLine();
         }

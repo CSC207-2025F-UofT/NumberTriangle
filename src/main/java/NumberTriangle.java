@@ -1,4 +1,7 @@
 import java.io.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -121,23 +124,35 @@ public class NumberTriangle {
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
-        // TODO define any variables that you want to use to store things
+        List<NumberTriangle> currLevel = new ArrayList<NumberTriangle>();
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
         NumberTriangle top = null;
 
         String line = br.readLine();
+        String[] lineParts = line.split(" ");
+        top = new NumberTriangle(Integer.parseInt(lineParts[0]));
+        currLevel.add(top);
         while (line != null) {
-
             // remove when done; this line is included so running starter code prints the
             // contents of the file
-            System.out.println(line);
-
-            // TODO process the line
 
             // read the next line
             line = br.readLine();
+            if (line == null) {
+                break;
+            }
+            lineParts = line.split(" ");
+            List<NumberTriangle> newCurr = new ArrayList<>();
+            for (String s : lineParts) {
+                newCurr.add(new NumberTriangle(Integer.parseInt(s)));
+            }
+            for (int i = 0; i < lineParts.length - 1; i += 1) {
+                currLevel.get(i).left = newCurr.get(i);
+                currLevel.get(i).right = newCurr.get(i + 1);
+            }
+            currLevel = newCurr;
         }
         br.close();
         return top;

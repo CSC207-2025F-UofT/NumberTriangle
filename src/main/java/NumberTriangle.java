@@ -134,6 +134,26 @@ public class NumberTriangle {
             line = br.readLine();
         }
         br.close();
+
+        NumberTriangle[][] nodes = new NumberTriangle[n][];
+        for(int i = 0; i < n; i++) {
+            String[] part = lines[i].trim().split("\\s+");
+            nodes[i] = new NumberTriangle[part.length];
+            for(int j = 0; j < part.length; j++) {
+                nodes[i][j] = new NumberTriangle(Integer.parseInt(part[j]));
+            }
+
+        }
+        for(int i = 0; i < n - 1; i++) {
+            for(int j = 0; j < nodes[i].length; j++) {
+                    nodes[i][j].setLeft(nodes[i+1][j]);
+                    nodes[i][j].setRight(nodes[i+1][j+1]);
+
+            }
+        }
+
+        top = nodes[0][0];
+
         return top;
     }
 

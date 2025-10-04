@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.List;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -94,11 +93,11 @@ public class NumberTriangle {
             return this.root;
         }
         else {
-            for (int i = 0; i < path.length(); i++) {
-                if (path.charAt(i) == ('l')) {
+            for (int n = 0; n < path.length(); n++) {
+                if (path.charAt(n) == ('l')) {
                     curr = curr.left;
                 } else {
-                    curr = curr.right;
+                    curr = curr.right
                 }
             }
             return curr.getRoot();

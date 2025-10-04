@@ -93,7 +93,7 @@ public class NumberTriangle {
      */
     public int retrieve(String path) {
         NumberTriangle current = this;
-
+//        test
         if (path == null || path.isEmpty()) {
             return current.root;
         }
@@ -186,3 +186,4 @@ public class NumberTriangle {
         System.out.println(mt.getRoot());
     }
 }
+
